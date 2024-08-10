@@ -1,16 +1,27 @@
+# Nome do executável
+TARGET = restaurante
+
+# Arquivos fonte
+SRCS = main.c menu.c pedido.c fila.c
+
+# Arquivos objeto
+OBJS = $(SRCS:.c=.o)
+
+# Compilador e flags
 CC = gcc
 CFLAGS = -Wall -Wextra -std=c11
 
-all: restaurante
+# Regra padrão: compila o executável
+all: $(TARGET)
 
-restaurante: main.o pedido.o
-	$(CC) $(CFLAGS) -o restaurante main.o pedido.o
+# Regra para compilar o executável
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) -o $@ $(OBJS)
 
-main.o: main.c pedido.h
-	$(CC) $(CFLAGS) -c main.c
+# Regra para compilar arquivos objeto
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
-pedido.o: pedido.c pedido.h
-	$(CC) $(CFLAGS) -c pedido.c
-
+# Limpar arquivos gerados
 clean:
-	rm -f *.o restaurante
+	rm -f $(TARGET) $(OBJS)
